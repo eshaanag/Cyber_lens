@@ -5,40 +5,44 @@ const Home: React.FC = () => {
   const [iocType, setIocType] = useState("IP");
 
   const handleSearch = () => {
-    // UI only — no API
     console.log(`Searching for ${iocType}: ${iocValue}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white">
-      {/* Hero Section */}
-      <section className="flex flex-col items-center justify-center px-4 pt-24 pb-32">
-        <div className="text-center max-w-4xl">
-          <h1 className="text-6xl font-bold leading-[1.15] pb-2 mb-4 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
-            Cyber Lens
+    <div className="min-h-screen bg-neutral-950 text-neutral-100">
+      {/* HERO */}
+      <section className="relative overflow-hidden">
+        {/* Subtle background grid */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,#262626_1px,transparent_0)] bg-[size:24px_24px] opacity-20" />
+
+        <div className="relative max-w-6xl mx-auto px-4 pt-28 pb-32 text-center">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6">
+            <span>Cyber</span>&nbsp;
+            <span className="text-cyan-400">Lens</span>
           </h1>
-          <p className="text-lg sm:text-xl mb-10 text-gray-300">
-            Illuminating the digital shadows. Stay ahead in cybersecurity with
-            threat intelligence and IOC analysis.
+
+          <p className="max-w-2xl mx-auto text-lg sm:text-xl text-neutral-400 mb-14">
+            A focused threat intelligence platform for fast IOC inspection,
+            contextual verdicts, and analyst-driven decisions.
           </p>
 
-          {/* Search Card */}
-          <div className="bg-gray-800 p-6 rounded-xl shadow-lg max-w-md mx-auto mb-10">
-            <div className="flex flex-col gap-4">
+          {/* SEARCH PANEL */}
+          <div className="max-w-2xl mx-auto border border-neutral-800 bg-neutral-900">
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 p-4">
               <input
                 type="text"
-                placeholder="Enter IOC value"
+                placeholder="Enter IP, domain, URL, or hash"
                 value={iocValue}
                 onChange={(e) => setIocValue(e.target.value)}
-                className="px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="sm:col-span-3 px-4 py-3 bg-neutral-950 border border-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
 
               <select
                 value={iocType}
                 onChange={(e) => setIocType(e.target.value)}
-                className="px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="sm:col-span-1 px-3 py-3 bg-neutral-950 border border-neutral-800 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
               >
-                <option value="IP">IP Address</option>
+                <option value="IP">IP</option>
                 <option value="Domain">Domain</option>
                 <option value="URL">URL</option>
                 <option value="Hash">Hash</option>
@@ -46,59 +50,50 @@ const Home: React.FC = () => {
 
               <button
                 onClick={handleSearch}
-                className="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg font-semibold transition-colors"
+                className="sm:col-span-1 px-4 py-3 bg-cyan-500 text-neutral-950 font-semibold hover:bg-cyan-400 transition-colors"
               >
-                Search
+                Analyze
               </button>
             </div>
-          </div>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="border border-red-600 hover:bg-red-600 px-8 py-3 rounded-lg font-semibold transition-colors">
-              Explore Threats
-            </button>
-            <button className="border border-red-600 hover:bg-red-600 px-8 py-3 rounded-lg font-semibold transition-colors">
-              Learn More
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-4">
+      {/* FEATURES */}
+      <section className="border-t border-neutral-800 py-24 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12">
-            Key Features
+          <h2 className="text-3xl sm:text-4xl font-semibold mb-14 text-center">
+            Built for real security work
           </h2>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            <div className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold mb-3 text-red-400">
-                Real-time Monitoring
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="border border-neutral-800 bg-neutral-900 p-6">
+              <h3 className="text-lg font-semibold mb-3 text-cyan-400">
+                IOC-Centric Analysis
               </h3>
-              <p className="text-gray-300">
-                Track cyber threats as they emerge using continuously updated
-                intelligence sources.
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Inspect IPs, domains, URLs, and hashes with contextual metadata
+                and historical signals.
               </p>
             </div>
 
-            <div className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold mb-3 text-red-400">
-                Threat Analysis
+            <div className="border border-neutral-800 bg-neutral-900 p-6">
+              <h3 className="text-lg font-semibold mb-3 text-cyan-400">
+                Clear Verdict System
               </h3>
-              <p className="text-gray-300">
-                Understand IOC behavior, reputation, and potential impact
-                clearly.
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Immediate classification — malicious, suspicious, or clean —
+                optimized for fast triage.
               </p>
             </div>
 
-            <div className="bg-gray-800 p-6 rounded-xl">
-              <h3 className="text-xl font-semibold mb-3 text-red-400">
-                Expert Insights
+            <div className="border border-neutral-800 bg-neutral-900 p-6">
+              <h3 className="text-lg font-semibold mb-3 text-cyan-400">
+                Analyst-First UI
               </h3>
-              <p className="text-gray-300">
-                Learn from curated insights and best practices in cybersecurity.
+              <p className="text-sm text-neutral-400 leading-relaxed">
+                Minimal design, structured data, and layouts that scale from
+                laptop to SOC screens.
               </p>
             </div>
           </div>

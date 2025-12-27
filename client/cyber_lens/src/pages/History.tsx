@@ -1,5 +1,3 @@
-import React from "react";
-
 type Row = {
   ioc: string;
   verdict: "Malicious" | "Clean" | "Suspicious" | "";
@@ -31,138 +29,104 @@ export default function History() {
 
   const badgeClass = (v: string) =>
     v === "Malicious"
-      ? "bg-red-600/10 text-red-400 ring-red-600/20"
+      ? "bg-red-600/10 text-red-400 ring-red-600/30"
       : v === "Clean"
-      ? "bg-emerald-600/10 text-emerald-400 ring-emerald-600/20"
+      ? "bg-emerald-600/10 text-emerald-400 ring-emerald-600/30"
       : v === "Suspicious"
-      ? "bg-amber-500/10 text-amber-400 ring-amber-500/20"
-      : "bg-slate-600/10 text-slate-400";
+      ? "bg-amber-500/10 text-amber-400 ring-amber-500/30"
+      : "bg-neutral-600/10 text-neutral-400 ring-neutral-600/30";
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-slate-100 px-4 py-12">
-      {/* Lens accent (sharp, subtle) */}
-      <div className="absolute right-6 top-6 hidden lg:block">
-        <div className="h-14 w-14 rounded-full border-2 border-cyan-500/30 flex items-center justify-center">
-          <div className="h-2.5 w-2.5 rounded-full bg-cyan-400" />
-        </div>
-      </div>
-
-      <div className="relative max-w-6xl mx-auto">
+    <div className="min-h-screen bg-neutral-950 text-neutral-100 px-4 py-12">
+      <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight">
+            <h1 className="text-3xl font-semibold tracking-tight">
               Scan History
             </h1>
-            <p className="text-sm text-slate-400 mt-1">
-              Previously analyzed Indicators of Compromise — sorted newest
-              first.
+            <p className="text-sm text-neutral-400 mt-1">
+              Previously analyzed Indicators of Compromise (IOCs).
             </p>
           </div>
 
-          {/* Small action area (visual only) */}
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2">
-              <input
-                aria-label="Search history"
-                type="search"
-                placeholder="Search IOC, note..."
-                className="px-3 py-2 rounded-md bg-slate-800 border border-slate-700 text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-400"
-              />
-            </div>
+          {/* Search + Export */}
+          <div className="flex w-full md:w-auto flex-col sm:flex-row gap-3 sm:items-center">
+            <input
+              type="search"
+              placeholder="Search IOC, note…"
+              className="w-full sm:w-64 px-3 py-2 text-sm bg-neutral-900 border border-neutral-800 placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            />
 
-            <button className="px-3 py-2 rounded-md bg-cyan-600/10 text-cyan-300 border border-cyan-600/20 text-sm hover:bg-cyan-600/15">
+            <button className="w-full sm:w-auto px-4 py-2 text-sm font-medium bg-cyan-500 text-neutral-950 hover:bg-cyan-400 transition-colors">
               Export
             </button>
           </div>
         </div>
 
-        {/* Card list for small screens */}
+        {/* Mobile cards */}
         <div className="space-y-4 md:hidden">
           {dummyData.map((row, idx) => (
-            <article
+            <div
               key={idx}
-              className="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-sm"
+              className="border border-neutral-800 bg-neutral-900 p-4"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="text-sm text-slate-400 truncate">
-                      {row.ioc || "—"}
-                    </div>
-                    <div
-                      className={`inline-flex items-center gap-2 px-2 py-1 rounded-full text-xs font-medium ring-1 ${badgeClass(
-                        row.verdict
-                      )}`}
-                    >
-                      <span
-                        className="h-2 w-2 rounded-full"
-                        style={{
-                          background:
-                            row.verdict === "Malicious"
-                              ? undefined
-                              : row.verdict === "Clean"
-                              ? undefined
-                              : undefined,
-                        }}
-                      />
-                      {row.verdict || "Unknown"}
-                    </div>
-                  </div>
-
-                  <p className="mt-2 text-sm text-slate-300 line-clamp-3">
-                    {row.note || "—"}
-                  </p>
-
-                  <div className="mt-3 text-xs text-slate-400 flex items-center gap-2">
-                    <span>{row.timestamp || "—"}</span>
-                    <span className="hidden sm:inline">•</span>
-                    <button className="text-cyan-400 hover:underline text-xs">
-                      View
-                    </button>
-                  </div>
+              <div className="flex justify-between items-start gap-3">
+                <div className="font-mono text-sm text-neutral-100 truncate">
+                  {row.ioc}
                 </div>
+                <span
+                  className={`px-2 py-0.5 text-xs font-medium ring-1 ${badgeClass(
+                    row.verdict
+                  )}`}
+                >
+                  {row.verdict || "Unknown"}
+                </span>
               </div>
-            </article>
+
+              <div className="mt-2 text-sm text-neutral-300">{row.note}</div>
+
+              <div className="mt-3 text-xs text-neutral-400">
+                {row.timestamp}
+              </div>
+            </div>
           ))}
         </div>
 
-        {/* Table for md+ screens */}
-        <div className="hidden md:block mt-4">
-          <div className="overflow-x-auto rounded-xl border border-slate-800 bg-slate-900/70">
-            <table className="min-w-full table-fixed">
-              <thead className="bg-slate-800/80 text-slate-300">
+        {/* Desktop Table */}
+        <div className="hidden md:block">
+          <div className="overflow-x-auto border border-neutral-700 bg-neutral-950">
+            <table className="min-w-full border-collapse text-sm">
+              <thead className="bg-neutral-900 text-neutral-300">
                 <tr>
-                  <th className="w-2/5 px-4 py-3 text-left text-sm font-medium">
+                  <th className="border border-neutral-700 px-4 py-3 text-left font-medium">
                     IOC
                   </th>
-                  <th className="w-1/6 px-4 py-3 text-left text-sm font-medium">
+                  <th className="border border-neutral-700 px-4 py-3 text-left font-medium">
                     Verdict
                   </th>
-                  <th className="w-1/4 px-4 py-3 text-left text-sm font-medium">
+                  <th className="border border-neutral-700 px-4 py-3 text-left font-medium">
                     Timestamp
                   </th>
-                  <th className="w-1/5 px-4 py-3 text-left text-sm font-medium">
+                  <th className="border border-neutral-700 px-4 py-3 text-left font-medium">
                     Note
                   </th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-800">
+              <tbody>
                 {dummyData.map((row, idx) => (
                   <tr
                     key={idx}
-                    className="hover:bg-slate-800/50 transition-colors"
+                    className="hover:bg-neutral-900 transition-colors"
                   >
-                    <td className="px-4 py-4 align-top">
-                      <div className="text-sm text-slate-100 truncate max-w-lg">
-                        {row.ioc || "—"}
-                      </div>
+                    <td className="border border-neutral-800 px-4 py-3 font-mono text-neutral-100 truncate max-w-lg">
+                      {row.ioc || "—"}
                     </td>
 
-                    <td className="px-4 py-4 align-top">
-                      <div
-                        className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ring-1 ${badgeClass(
+                    <td className="border border-neutral-800 px-4 py-3">
+                      <span
+                        className={`inline-flex items-center gap-2 px-2.5 py-1 text-xs font-medium ring-1 ${badgeClass(
                           row.verdict
                         )}`}
                       >
@@ -174,23 +138,19 @@ export default function History() {
                               ? "bg-emerald-400"
                               : row.verdict === "Suspicious"
                               ? "bg-amber-400"
-                              : "bg-slate-400"
+                              : "bg-neutral-400"
                           }`}
                         />
                         {row.verdict || "Unknown"}
-                      </div>
+                      </span>
                     </td>
 
-                    <td className="px-4 py-4 align-top">
-                      <div className="text-sm text-slate-400">
-                        {row.timestamp || "—"}
-                      </div>
+                    <td className="border border-neutral-800 px-4 py-3 text-neutral-400 whitespace-nowrap">
+                      {row.timestamp || "—"}
                     </td>
 
-                    <td className="px-4 py-4 align-top">
-                      <div className="text-sm text-slate-300 truncate max-w-xs">
-                        {row.note || "—"}
-                      </div>
+                    <td className="border border-neutral-800 px-4 py-3 text-neutral-300 truncate max-w-xs">
+                      {row.note || "—"}
                     </td>
                   </tr>
                 ))}
@@ -198,10 +158,9 @@ export default function History() {
             </table>
           </div>
 
-          {/* lightweight footer / hint */}
-          <div className="mt-4 text-xs text-slate-500">
-            Showing {dummyData.length} recent scans — responsive view: table on
-            wider screens, compact cards on mobile.
+          <div className="mt-3 text-xs text-neutral-500">
+            Showing {dummyData.length} recent scans — optimized for analyst
+            review.
           </div>
         </div>
       </div>
