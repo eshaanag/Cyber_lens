@@ -11,10 +11,17 @@ import type {
 export interface OrchestratedResponse<TResponse = unknown> {
   ioc: string;
   detectedType: IocType | null;
+  validation: {
+    isValid: boolean;
+    userSelectedType?: IocType;
+  };
   providers: ProviderExecutionResult<TResponse>[];
   meta: {
     executedAt: string;
     executionTimeMs: number;
+    detected: {
+      ipVersion?: 4 | 6;
+    } | null;
   };
 }
 
@@ -35,8 +42,10 @@ export async function orchestrateThreatIntelligence<
   const startTime = Date.now();
 
   const detected = detectIocType(ioc);
+  let validation = { isValid: true }; // Default valid if no user selection
+  
   if (options.userSelectedType) {
-    const validation = validateIocType(ioc, options.userSelectedType);
+    validation = validateIocType(ioc, options.userSelectedType);
   }
 
   // -------------------Handle case where IOC type cannot be detected--------------------------
@@ -44,10 +53,15 @@ export async function orchestrateThreatIntelligence<
     return {
       ioc,
       detectedType: null,
+      validation: {
+        ...validation,
+        userSelectedType: options.userSelectedType,
+      },
       providers: [],
       meta: {
         executedAt: new Date().toISOString(),
         executionTimeMs: Date.now() - startTime,
+        detected: null,
       },
     };
   }
@@ -67,10 +81,17 @@ export async function orchestrateThreatIntelligence<
   return {
     ioc,
     detectedType: detected.type,
+    validation: {
+      ...validation,
+      userSelectedType: options.userSelectedType,
+    },
     providers: providerResults,
     meta: {
       executedAt: new Date().toISOString(),
       executionTimeMs,
+      detected: {
+        ipVersion: detected.ipVersion,
+      },
     },
   };
 }
